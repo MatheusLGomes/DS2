@@ -1,28 +1,28 @@
-import sqlite3
+from Conexao import conectar_bd
+
+def inserir_dados(nome, email, senha):
+    conn, cursor = conectar_bd()
+    
+
+     # Valores que você deseja inserir na tabela clientes.
+    nome_cliente = "Matheus"
+    email_cliente = "matheus@gmail.com"
+    senha_cliente = "1234"
 
 
 
-# Função para cadastrar um novo cliente
-def cadastrar_cliente(email, senha):
-    cursor.execute("INSERT INTO clientes (email, senha) VALUES (?, ?)", (email, senha))
-    conn.commit()
 
-# Função para listar todos os clientes
-def listar_clientes():
-    cursor.execute("SELECT * FROM clientes")
-    return cursor.fetchall()
+    # Comando SQL para inserção de dados.
+    sql = "INSERT INTO clientes(nome, email,senha) VALUES (%s, %s, %s)"
+    valores = (nome_cliente, email_cliente, senha_cliente)
+    
+    try:
+        cursor.execute(sql, valores)
+        conn.commit()  # Confirma a transação no banco de dados.
+        print("Dados inseridos com sucesso!")
+    except Exception as e:
+        print("Erro ao inserir dados:", e)
+    finally:
+        cursor.close()
+        conn.close()
 
-# Função para buscar um cliente por ID
-def buscar_cliente(id):
-    cursor.execute("SELECT * FROM clientes WHERE id=?", (id,))
-    return cursor.fetchone()
-
-# Função para atualizar os dados de um cliente
-def atualizar_cliente(id, novo_email, nova_senha):
-    cursor.execute("UPDATE clientes SET email=?, senha=? WHERE id=?", (novo_email, nova_senha, id))
-    conn.commit()
-
-# Função para deletar um cliente
-def deletar_cliente(id):
-    cursor.execute("DELETE FROM clientes WHERE id=?", (id,))
-    conn.commit()
